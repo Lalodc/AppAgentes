@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Agentes Xico</title>
+    <link rel="stylesheet" href="css/sample.css" />
+
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="css/creative.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/skin2.css" />
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/flags.css" />
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
+    <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.standalone.css">
+    <link rel="stylesheet" href="css/xpull.css">
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-default ">
+        <!-- style="background-image: url('assets/fondo.jpg'); background-repeat: no-repeat;" -->
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img width="60px" style="margin-top:-10px;" src="assets/logo.svg" alt="">
+          </a>
+          <div class="region">
+            <p></p>
+          </div>
+        </div>
+      </nav>
+      <section id="head-blog" >
+        <div  class="tab-content" style="margin-top:-70px;">
+          <!--<div class="xpull">
+            <div class="xpull__spinner">
+              <div class="xpull__spinner-circle"></div>
+            </div>
+          </div>-->
+          <div class="tab-pane fade in active" id="panel">
+            <ul class="nav justify-content-center no-padding">
+              <li id="btnPedidos" style="display: flex; justify-content: center;" href="#pedidos" aria-controls="pedidos" role="tab" data-toggle="tab" class="col-xs-6" style="list-style: none;"><a><img src="assets/icon-truck.svg" alt=""><p style="font-size:9px; color:grey;">Pedidos</p></a></li>
+              <li id="btnPedidosChecados" style="display: flex; justify-content: center;" href="#pedidosChecados" aria-controls="reporte" role="tab" data-toggle="tab" class="col-xs-6" style="list-style: none;"><a><img src="assets/icon-checked.svg" alt=""><p style="font-size:9px; color:grey;">Pedidos checados</p></a></li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="m2">
+            <table class="table table-striped">
+              <tbody id="notificaciones">
+
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane fade" id="pedidos">
+            <div style="padding:10px 10px 10px; background-color:#29b6f6; color:white; font-size: 18px;" class="text-center header">
+              <a style="float:left; font-size:18px; color:white;" href="#panel" data-toggle="tab">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Volver
+              </a>
+              Pedidos a entregar
+            </div>
+            <br>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table id="tablaPedidos" class="table table-striped table-bordered table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Clave</th>
+                          <!-- <th>Tienda</th> -->
+                          <th>Cantidad</th>
+                          <th>Kg</th>
+                          <th>Pz</th>
+                          <th class="text-center">Verificar</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pedido">
+            <div style="padding:10px 10px 10px; background-color:#29b6f6; color:white; font-size: 18px;" class="text-center header">
+              <a style="float:left; font-size:18px; color:white;" href="#pedidos" data-toggle="tab">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Volver
+              </a>
+              Pedido
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="tienda">Tienda:</label>
+                    <input class="form-control" type="text" name="tienda" id="tienda">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="consorcio">Consorcio:</label>
+                    <input class="form-control" type="text" name="consorcio" id="consorcio">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label>Productos:</label>
+                  <div class="table-responsive">
+                    <table id="tablaProductosPedido" class="table table-hover table-condensed table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Clave</th>
+                          <th>Nombre</th>
+                          <th>Total Kg</th>
+                          <th>Total Pz</th>
+                          <th>Kg Entregados</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                  <button id="btnChecarPedido" type="button" class="btn btn-success btn-block">Finalizar</button>
+                </div>
+              </div>
+            </div> 
+          </div>
+          <div class="tab-pane fade" id="pedidosChecados"> 
+            <div style="padding:10px 10px 10px; background-color:#29b6f6; color:white; font-size: 18px;" class="text-center header">
+              <a style="float:left; font-size:18px; color:white;" href="#panel" data-toggle="tab">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Volver
+              </a>
+              Pedidos checados
+            </div>
+            <br>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive">
+                    <table id="tablaPedidosChecados" class="table table-striped table-bordered table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Clave</th>
+                          <th>Cantidad</th>
+                          <th>Kg</th>
+                          <th>Pz</th>
+                          <th>Ver</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pedidoChecado">
+            <div style="padding:10px 10px 10px; background-color:#29b6f6; color:white; font-size: 18px;" class="text-center header">
+              <a style="float:left; font-size:18px; color:white;" href="#pedidosChecados" data-toggle="tab">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Volver
+              </a>
+              Pedido
+            </div>
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="tiendaChecado">Tienda:</label>
+                    <input class="form-control" type="text" name="tiendaChecado" id="tiendaChecado">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="consorcioChecado">Consorcio:</label>
+                    <input class="form-control" type="text" name="consorcioChecado" id="consorcioChecado">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label>Productos:</label>
+                  <div class="table-responsive">
+                    <table id="tablaProductosPedidoChecado" class="table table-hover table-condensed table-striped table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Clave</th>
+                          <th>Nombre</th>
+                          <th>Total Kg</th>
+                          <th>Total Pz</th>
+                          <th>Kg Entregados</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> 
+          </div>
+          <div class="tab-pane fade" id="panel-opciones">
+            <ul class="list-group">
+              <li class="list-group-item" style="background-color: #007BFF; color: white; font-size:18px;" href="#perfil" aria-controls="perfil" role="tab" data-toggle="tab">
+                <i class="material-icons md-24">account_circle</i>
+                Editar perfil
+                <i class="material-icons">keyboard_arrow_right</i>
+              </li>
+              <button onclick="logout();" class="btn btn-lg btn-danger btn-block">Cerrar sesión</button>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="perfil">
+            <!-- <legend style="padding:10px 10px 10px; background-color:#29b6f6 ; color:white;" class=“text-center header”><a style="float:left; margin-top:2px; font-size:18px; color:white;" href="#panel-opciones" data-toggle="tab"><span class="glyphicon glyphicon-menu-left"></span> Volver</a><span style="margin-left:-50px;">Editar perfil</span></legend> -->
+            <div style="padding:10px 10px 10px; background-color:#29b6f6; color:white; font-size: 18px;" class="text-center header">
+              <a style="float:left; font-size:18px; color:white;" href="#panel" data-toggle="tab">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Volver
+              </a>
+              Editar perfil
+            </div>
+            <div class="row">
+              <div class="container">
+                <form style="width:100%; margin:0 auto; margin-top:20px;"  class="form-horizontal">
+                  <fieldset style="padding:5%; margin-top:-30px;" class="text-left">
+                    <div class="form-group">
+                      <div class="col-md-12 col-xs-12 col-sm-12">
+                        <label for="nombrePerfil">Nombre:</label>
+                        <input readonly type="text" id="nombrePerfil" class="form-control" placeholder="">
+                        <span style="display: none;" id="helpblockNombrePerfil" class="help-block">Campo obligatorio</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12 col-xs-12 col-sm-12">
+                        <label for="nombreUsuario">Nombre de usuario:</label>
+                        <input readonly type="text" id="nombreUsuario" class="form-control" placeholder="">
+                        <span style="display: none;" id="helpblockNombreUsuario" class="help-block">Campo obligatorio</span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-12 col-xs-12 col-sm-12">
+                        <button id="btnHabilitarEditar" class="btn btn-warning">Editar</button>
+                        <button id="btnEditarPerfil" disabled="disabled" class="btn btn-success">Guardar</button>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-md-8">
+                        <label class="control-label">Contraseña</label>
+                        <button class="btn btn-primary" type="button" id="btnExpandir" data-toggle="collapse" data-target="#collapseContraseña" aria-expanded="false" aria-controls="collapseContraseña">Expandir</button>
+                      </div>
+                    </div>
+                    <div class="collapse" id="collapseContraseña">
+                      <div class="well">
+                        <div class="form-group">
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label for="">Nueva contraseña</label>
+                            <input type="password" id="nuevaContraseña" class="form-control">
+                            <span style="display: none;" id="helpblockNuevaContraseña" class="help-block">Campo obligatorio</span>
+                          </div>
+                        </div>
+                        <!-- <div class="checkbox">
+                          <label><input id="checkMostrar" type="checkbox"> Mostrar</label>
+                        </div> -->
+                        <button type="button" onclick="guardarContraseña" class="btn btn-success">Guardar contraseña</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="footer-panel">
+          <ul class="nav nav-tabs" style="width:100%; border:none !important;">
+            <li style="width:33%;"class="active"><a id="tabsemana" href="#panel" data-toggle="tab" aria-label="Left Align"><i class="material-icons no-padding">home</i></a></li>
+            <li onclick="verNotificaciones()" style="width:33%;"><a id="tabordenes" href="#m2" data-toggle="tab"><i class="material-icons no-padding">notifications</i><span id="spanNotificaciones" style="background-color: red; display: none;" class="badge"></span></a></li>
+            <li style="width:33%;"><a id="tabPerfil" href="#panel-opciones" data-toggle="tab"><i class="material-icons no-padding">menu</i></a></li>
+          </ul>
+        </div>
+      </section>
+    </header>
+    <div id="modalEditarProducto" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Editar datos del producto</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                  <div class="form-group">
+                    <label for="claveProductoEditar">Producto:</label>
+                    <input id="claveProductoEditar" type="text" class="form-control input-sm" name="claveProductoEditar" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                  <div class="form-group">
+                    <label for="nombreProductoEditar">Nombre:</label>
+                    <input id="nombreProductoEditar" type="text" class="form-control input-sm" name="nombreProductoEditar" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                  <div class="form-group">
+                    <label for="pedidoPzEditar">PedidoPz:</label>
+                    <input id="pedidoPzEditar" type="number" name="pedidoPzEditar" class="form-control input-sm">
+                    <span style="display: none;" id="helpblockPedidoPzEditar" class="help-block">Campo obligatorio</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                  <div class="form-group">
+                    <label for="degusPzEditar">Degustación Pz:</label>
+                    <input id="degusPzEditar" type="number" name="degusPzEditar" class="form-control input-sm">
+                    <span style="display: none;" id="helpblockDegusPzEditar" class="help-block">Campo obligatorio</span>
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-6 col-sm-6">
+                  <div class="form-group">
+                    <label for="cambioFisicoEditar">Cambio físico:</label>
+                    <input id="cambioFisicoEditar" type="number" name="cambioFisicoEditar" class="form-control input-sm">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                  <div class="hidden" class="form-group">
+                    <label for="empaqueEditar" class="control-label">Empaque:</label>
+                    <input id="empaqueEditar" type="number" name="empaqueEditar" class="form-control input-sm" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label for="totalPzEditar">Total Pz:</label>
+                    <input id="totalPzEditar" type="number" name="totalPzEditar" class="form-control input-sm" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label for="totalKgEditar">Total Kg:</label>
+                    <input id="totalKgEditar" type="number" name="totalKgEditar" class="form-control input-sm" readonly>
+                  </div>
+                </div>
+              </div>        
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-success" onclick="guardarCambiosProducto()" data-dismiss="modal">Guardar cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="modalTicket" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Detalles del ticket</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="claveTicket">Clave:</label>
+                <input id="claveTicket" name="claveTicket" type="text" class="form-control input-sm" readonly>
+              </div>
+              <div class="form-group">
+                <label for="claveProducto">Producto:</label>
+                <input id="claveProducto" type="text" class="form-control input-sm" name="claveProducto" readonly>
+              </div>
+              <div class="form-group">
+                <label for="problemaTicket">Problema:</label>
+                <input id="problemaTicket" type="text" class="form-control input-sm" name="problemaTicket" readonly>
+              </div>
+              <div class="form-group">
+                <label for="fechaTicket">Fecha:</label>
+                <input id="fechaTicket" type="date" name="fechaTicket" class="form-control input-sm" readonly>
+              </div>
+              <div class="form-group">
+                <label for="mensaje" class="control-label">Respuesta:</label>
+                <textarea id="respuesta" class="form-control" name="respuesta" rows="3" cols="80" readonly></textarea>
+              </div>
+              <!--<div class="form-inline">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" onclick="enviarMensaje()" class="btn btn-primary">Guardar</button>
+              </div>-->
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            <!--<button type="button" class="btn btn-primary">Aceptar</button>-->
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/msdropdown/jquery.dd.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="vendor/bootstrap/js/bootstrap4.min.js"></script> -->
+    <script src="/js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap.min.js"></script>
+    <script src="js/dataTables.responsive.js"></script>
+    <script src="js/jquery.toaster.js"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.es.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+      var config = {
+        apiKey: "AIzaSyA19j6-VLNcXLJfBkfd_lZfFFbzg6z0Imc",
+        authDomain: "xico-netcontrol.firebaseapp.com",
+        databaseURL: "https://xico-netcontrol.firebaseio.com",
+        projectId: "xico-netcontrol",
+        storageBucket: "xico-netcontrol.appspot.com",
+        messagingSenderId: "248615705793"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="js/moment-with-locales.js"></script>
+    <script src="cordova.js"></script>
+    <script src="js/xpull.js"></script>
+    <script src="js/panel.js"></script>
+  </body>
+</html>

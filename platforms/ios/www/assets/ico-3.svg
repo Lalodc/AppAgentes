@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="85px" height="83px" viewBox="0 0 85 83" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FF00A3" offset="0%"></stop>
+            <stop stop-color="#B000FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile-Portrait" transform="translate(-227.000000, -153.000000)">
+            <g id="Group-2-Copy" transform="translate(129.000000, 153.000000)">
+                <g id="Group-4" transform="translate(98.000000, 0.000000)">
+                    <g id="Group-3-Copy" fill="url(#linearGradient-1)">
+                        <rect id="Rectangle-10" x="2.96926989e-14" y="0" width="84.2739966" height="82.9824862" rx="19"></rect>
+                    </g>
+                    <g id="ic_person_black_24px" transform="translate(27.000000, 24.000000)" fill-rule="nonzero" fill="#4F056A">
+                        <g id="Group">
+                            <path d="M17.5,17.5 C22.19625,17.5 26,13.69625 26,9 C26,4.30375 22.19625,0.5 17.5,0.5 C12.80375,0.5 9,4.30375 9,9 C9,13.69625 12.80375,17.5 17.5,17.5 Z M17.5,21.75 C11.82625,21.75 0.5,24.5975 0.5,30.25 L0.5,34.5 L34.5,34.5 L34.5,30.25 C34.5,24.5975 23.17375,21.75 17.5,21.75 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                    <path d="M44.5,32 L38,33.5938059 C38,33.5938059 38.3498034,39.3018928 44.5,39.3018928 C50.6501966,39.3018928 51,33.5938059 51,33.5938059 L44.5,32 Z" id="Line" fill="#F8F3F7"></path>
+                    <path d="M44.24299,27.0597752 C48.3723673,26.9370501 52.8715926,34.4925196 52.8715926,34.4925196 C52.8715926,34.4925196 54.3209792,23.3966204 44.24299,23.3966204 C34.1650008,23.3966204 36.1730003,34.9888017 36.1730003,34.9888017 C36.1730003,34.9888017 40.1136128,27.1825003 44.24299,27.0597752 Z" id="Line" fill="#F8F3F7"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

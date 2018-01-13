@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Tickets Xico</title>
+    <link rel="stylesheet" href="css/sample.css" />
+
+    <!-- <msdropdown> -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">-->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/creative.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/skin2.css" />
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/flags.css" />
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="css/msdropdown/dd.css" />
+    <link rel="stylesheet" href="css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.standalone.css">
+    <script src="js/msdropdown/jquery.dd.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-default ">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img width="60px" style="margin-top:-10px;" src="assets/logo.svg" alt="">
+          </a>
+          <div class="region">
+            <p></p>
+          </div>
+        </div>
+      </nav>
+      <section id="head-blog" >
+        <!-- Nav tabs -->
+        <!-- Tab Semana-->
+        <div  class="tab-content" style="margin-top:-70px;">
+          <div class="tab-pane fade in active" id="m1">
+            <legend style="padding:10px 10px 10px; background-color:#29b6f6; color:white;" class="text-center header"> <a style="float:left; margin-top:2px; font-size:18px; color:white;" href="javascript:window.history.back();"><span class="glyphicon glyphicon-menu-left"></span> Volver</a><span style="margin-left:-50px;">Lista de tickets</span></legend>
+            <div class="panel-group"  style="border:none;"role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default" >
+                <div class="panel-heading" role="tab" id="headingTwo" style="height:46px; background-color:white;">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <span class="glyphicon glyphicon-menu-down"></span> Calidad de producto
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseTwo"  class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body no-padding">
+                    <table id="ticketsCalidadProducto" class="table table-striped">
+                      <tbody>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading" style="height:46px; background-color:white;" role="tab" id="headingThree">
+                  <h4 class="panel-title">
+                    <a class="collapsed" role="button"  data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      <span class="glyphicon glyphicon-menu-down"></span> Retraso de pedido
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                  <div class="panel-body no-padding">
+                    <table id="ticketsRetrasoPedido" class="table table-striped">
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="m2">
+            <table class="table table-striped">
+              <tbody id="notificaciones">
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--<div id="footer-panel">
+          <ul class="nav nav-tabs" style="width:100%; border:none !important;">
+            <li style="width:33%;"class="active"><a id="tabsemana" href="panel.html" aria-label="Left Align"><i class="material-icons no-padding">home</i></a></li>
+            <li onclick="verNotificaciones()" style="width:33%;"><a id="tabordenes" href="#m2" data-toggle="tab"><i class="material-icons no-padding">notifications</i><span id="spanNotificaciones" style="background-color: red; display: none;" class="badge"></span></a></li>
+            <li style="width:33%;"><a id="tabproyectos" href="#m3" data-toggle="tab"><i class="material-icons no-padding">menu</i></a></li>
+          </ul>
+        </div>-->
+      </section>
+    </header>
+    <div id="modalTicket" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Detalles del ticket</h4>
+          </div>
+          <div class="modal-body">
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary">Aceptar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/bootstrap-tooltip.js"></script>
+    <!--<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>-->
+    <script type="text/javascript" src="js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.es.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyA19j6-VLNcXLJfBkfd_lZfFFbzg6z0Imc",
+        authDomain: "xico-netcontrol.firebaseapp.com",
+        databaseURL: "https://xico-netcontrol.firebaseio.com",
+        projectId: "xico-netcontrol",
+        storageBucket: "xico-netcontrol.appspot.com",
+        messagingSenderId: "248615705793"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="js/moment-with-locales.js"></script>
+    <script src="js/tickets.js"></script>
+  </body>
+</html>

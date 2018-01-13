@@ -1,0 +1,30 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-camera": {
+            "CAMERA_USAGE_DESCRIPTION": " ",
+            "PHOTOLIBRARY_USAGE_DESCRIPTION": " ",
+            "PACKAGE_NAME": "pedidos.xico"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "pedidos.xico"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "pedidos.xico"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "pedidos.xico"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "pedidos.xico"
+        }
+    }
+}
