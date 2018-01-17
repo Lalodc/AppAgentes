@@ -68,6 +68,7 @@
             <div class="container">
               <div class="row">
                 <div class="col-md-12">
+                  <!-- <div id="loaderPedidos" class="loader"></div> -->
                   <div class="table-responsive">
                     <table id="tablaPedidos" class="table table-striped table-bordered table-hover table-condensed">
                       <thead>
@@ -114,24 +115,80 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <label>Productos:</label>
-                  <div class="table-responsive">
-                    <table id="tablaProductosPedido" class="table table-hover table-condensed table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Clave</th>
-                          <th>Nombre</th>
-                          <th>Total Kg</th>
-                          <th>Total Pz</th>
-                          <th>Kg Entregados</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        
-                      </tbody>
-                    </table>
+                  <div class="btn-group" role="group" aria-label="...">
+                    <a id="aTabPedido" class="btn btn-primary" href="#tabPedido" aria-controls="tabPedido" role="tab" data-toggle="tab">Pedido</a>
+                    <a id="aTabDegustacion" class="btn btn-primary" href="#tabDegustacion" aria-controls="tabDegustacion" role="tab" data-toggle="tab">Degustación</a>
+                    <a id="aTabCambioFisico" class="btn btn-primary" href="#tabCambioFisico" aria-controls="tabCambioFisico" role="tab" data-toggle="tab">Cambio físico</a>
                   </div>
-                  <button id="btnChecarPedido" type="button" class="btn btn-success btn-block">Finalizar</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tabPedido">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosPedido" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                      <button id="btnChecarPedido" type="button" class="btn btn-success btn-block">Finalizar</button>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tabDegustacion">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosDegustacion" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                      <button id="btnChecarDegustacion" type="button" class="btn btn-success btn-block">Finalizar</button>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tabCambioFisico">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosCambioFisico" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                      <button id="btnChecarCambioFisico" type="button" class="btn btn-success btn-block">Finalizar</button>
+                    </div>
+                  </div>   
                 </div>
               </div>
             </div> 
@@ -202,7 +259,8 @@
                           <th>Nombre</th>
                           <th>Total Kg</th>
                           <th>Total Pz</th>
-                          <th>Kg Entregados</th>
+                          <th>Kg Ent.</th>
+                          <th>Pz Ent.</th>
                         </tr>
                       </thead>
                       <tbody>

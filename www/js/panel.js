@@ -218,7 +218,7 @@ function mostrarPedidos() {
                       <td>${encabezado.cantidadProductos}</td>
                       <td>${encabezado.totalKilos}</td>
                       <td>${encabezado.totalPiezas}</td>
-                      <td><a onclick="verificar('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                      <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
                     </tr>`;
           }
         }
@@ -260,7 +260,7 @@ function mostrarPedidosChecados() {
   });
 }
 
-function verificar(idPedidoPadre, idPedido) {
+function verificarPedido(idPedidoPadre, idPedido) {
   let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}`);
   rutaPedidoHijo.once('value', function(snapshot) {
 
@@ -269,18 +269,39 @@ function verificar(idPedidoPadre, idPedido) {
     $('#consorcio').val(snapshot.val().encabezado.consorcio);
 
     let productos = snapshot.val().detalle;
-    let filas = "";
+    let filas = "", filas2 = "", filas3 = "";
     for(let producto in productos) {
       filas += `<tr id="${producto}">
                   <td>${productos[producto].clave}</td>
                   <td>${productos[producto].nombre}</td>
-                  <td>${productos[producto].totalPz}</td>
-                  <td>${productos[producto].totalKg}</td>
-                  <td><input class="form-control" type="number"></td>
+                  <td>${productos[producto].pedidoPz}</td>
+                  <td>${productos[producto].pedidoKg}</td>
+                  <td><input class="form-control inputKgPedidoEnt" type="number"></td>
+                  <td><input class="form-control inputPzPedidoEnt" type="number"</td>
+                </tr>`;
+
+      filas2 += `<tr id="${producto}">
+                  <td>${productos[producto].clave}</td>
+                  <td>${productos[producto].nombre}</td>
+                  <td>${productos[producto].degusPz}</td>
+                  <td>${productos[producto].degusKg}</td>
+                  <td><input class="form-control inputKgDegusEnt" type="number"></td>
+                  <td><input class="form-control inputPzDegusEnt" type="number"</td>
+                </tr>`;
+
+      filas3 += `<tr id="${producto}">
+                  <td>${productos[producto].clave}</td>
+                  <td>${productos[producto].nombre}</td>
+                  <td>${productos[producto].cambioFisicoPz}</td>
+                  <td>${productos[producto].cambioFisicoKg}</td>
+                  <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
+                  <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
                 </tr>`;
     }
 
     $('#tablaProductosPedido tbody').html(filas);
+    $('#tablaProductosDegustacion tbody').html(filas2)
+    $('#tablaProductosCambioFisico tbody').html(filas3)
   });
 }
 
@@ -300,6 +321,7 @@ function verChecado(idPedidoPadre, idPedido) {
                   <td>${productos[producto].totalPz}</td>
                   <td>${productos[producto].totalKg}</td>
                   <td>${productos[producto].kilosEntregados}</td>
+                  <td>${productos[producto].piezasEntregadas}</td>
                 </tr>`;
     }
 
@@ -309,57 +331,40 @@ function verChecado(idPedidoPadre, idPedido) {
 
 function checarPedido(idPedidoPadre, idPedido) {
   let ids = [];
-  let kilosEntregados = [];
+  let kgPedidoEnt = [], pzPedidoEnt = [];
   let bandera = true;
 
   $('#tablaProductosPedido tbody tr').each(function() {
     ids.push($(this).attr('id'));
   });
 
-  $('#tablaProductosPedido tbody td input').each(function(){
-    if($(this).val() != undefined && $(this).val().length > 0) {
-      kilosEntregados.push(Number($(this).val()));
-    }else {
-      bandera = false;
-    }
+  $('.inputKgPedidoEnt').each(function() {
+    kgPedidoEnt.push(Number($(this).val()));
   });
 
-  if(bandera == true) {
-    var i = 0,
-        length = ids.length;
-    for (i; i < length; i++) {
-      let rutaProducto = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[i]}`);
-      rutaProducto.update({
-        kilosEntregados: kilosEntregados[i]
-      });
-    }
-    let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/encabezado/`);
-    rutaPedidoHijo.update({
-      checado: true
+  $('.inputPzPedidoEnt').each(function() {
+    pzPedidoEnt.push(Number($(this).val()));
+  });
+
+  var i = 0,
+  length = ids.length;
+  for (i; i < length; i++) {
+    let rutaProducto = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[i]}`);
+    rutaProducto.update({
+      kgPedidoEnt: kgPedidoEnt[i],
+      pzPedidoEnt: pzPedidoEnt[i]
     });
-
-    $('#btnPedidos').tab('show');
-
-    $.toaster({ priority : 'success', title : 'Mensaje', message : 'Se ha finalizado el pedido'});
   }
-  else {
-    $.toaster({ priority : 'danger', title : 'Alerta', message : 'No has llenado todos los campos'});
-  }
-}
-
-function calcularTotales() {
-  /*let $filaTotales = $('#filaTotales');
-  let hermanos = $filaTotales.siblings();
-
-  let TotalPiezas = 0, TotalKilos = 0;
-
-  hermanos.each(function (){
-    TotalPiezas += Number($(this)[0].cells[6].innerHTML);
-    TotalKilos += Number($(this)[0].cells[7].innerHTML);
+  let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/encabezado/`);
+  rutaPedidoHijo.update({
+    checado: true
   });
 
-  $filaTotales[0].cells[6].innerHTML = TotalPiezas;
-  $filaTotales[0].cells[7].innerHTML = TotalKilos.toFixed(4);*/
+  $('#btnPedidos').tab('show');
+
+  $('.inputKilosEnt').val('');
+  $('.inputPiezasEnt').val('');
+  $.toaster({ priority : 'success', title : 'Mensaje', message : 'Se ha finalizado el pedido'});
 }
 
 function limpiarCampos() {
