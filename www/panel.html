@@ -115,15 +115,19 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <div class="btn-group" role="group" aria-label="...">
-                    <a id="aTabPedido" class="btn btn-primary" href="#tabPedido" aria-controls="tabPedido" role="tab" data-toggle="tab">Pedido</a>
-                    <a id="aTabDegustacion" class="btn btn-primary" href="#tabDegustacion" aria-controls="tabDegustacion" role="tab" data-toggle="tab">Degustación</a>
-                    <a id="aTabCambioFisico" class="btn btn-primary" href="#tabCambioFisico" aria-controls="tabCambioFisico" role="tab" data-toggle="tab">Cambio físico</a>
+                  <div class="radioBtn btn-group" role="group" aria-label="...">
+                    <a id="aTabPedido" class="btn btn-primary active" href="#tabPedido" aria-controls="tabPedido" role="tab" data-toggle="tab" data-title="Y">Pedido</a>
+                    <a id="aTabDegustacion" class="btn btn-primary notActive" href="#tabDegustacion" aria-controls="tabDegustacion" role="tab" data-toggle="tab" data-title="X">Degustación</a>
+                    <a id="aTabCambioFisico" class="btn btn-primary notActive" href="#tabCambioFisico" aria-controls="tabCambioFisico" role="tab" data-toggle="tab" data-title="N">Cambio físico</a>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
+                  <br>
+                  <div class="alert alert-warning" role="alert">
+                    Proceda a llenar los kilos y piezas entregados en sus respectivas categorías del pedido, degustación y cambio físico.
+                  </div>
                   <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="tabPedido">
                       <label>Productos:</label>
@@ -144,7 +148,6 @@
                           </tbody>
                         </table>
                       </div>
-                      <button id="btnChecarPedido" type="button" class="btn btn-success btn-block">Finalizar</button>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tabDegustacion">
                       <label>Productos:</label>
@@ -165,7 +168,6 @@
                           </tbody>
                         </table>
                       </div>
-                      <button id="btnChecarDegustacion" type="button" class="btn btn-success btn-block">Finalizar</button>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="tabCambioFisico">
                       <label>Productos:</label>
@@ -186,9 +188,9 @@
                           </tbody>
                         </table>
                       </div>
-                      <button id="btnChecarCambioFisico" type="button" class="btn btn-success btn-block">Finalizar</button>
                     </div>
-                  </div>   
+                  </div>
+                  <button id="btnChecarPedido" type="button" class="btn btn-success btn-block">Finalizar</button>  
                 </div>
               </div>
             </div> 
@@ -250,24 +252,78 @@
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <label>Productos:</label>
-                  <div class="table-responsive">
-                    <table id="tablaProductosPedidoChecado" class="table table-hover table-condensed table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Clave</th>
-                          <th>Nombre</th>
-                          <th>Total Kg</th>
-                          <th>Total Pz</th>
-                          <th>Kg Ent.</th>
-                          <th>Pz Ent.</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        
-                      </tbody>
-                    </table>
+                  <div class="radioBtn btn-group" role="group" aria-label="...">
+                    <a id="aTabPedidoChecado" class="btn btn-primary active" href="#tabPedidoChecado" aria-controls="tabPedidoChecado" role="tab" data-toggle="tab" data-title="Y">Pedido</a>
+                    <a id="aTabDegustacionChecado" class="btn btn-primary notActive" href="#tabDegustacionChecado" aria-controls="tabDegustacionChecado" role="tab" data-toggle="tab" data-title="X">Degustación</a>
+                    <a id="aTabCambioFisicoChecado" class="btn btn-primary notActive" href="#tabCambioFisicoChecado" aria-controls="tabCambioFisicoChecado" role="tab" data-toggle="tab" data-title="N">Cambio físico</a>
                   </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="tabPedidoChecado">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosPedidoChecado" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tabDegustacionChecado">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosDegusChecado" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tabCambioFisicoChecado">
+                      <label>Productos:</label>
+                      <div class="table-responsive">
+                        <table id="tablaProductosCambioFisicoChecado" class="table table-hover table-condensed table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Clave</th>
+                              <th>Nombre</th>
+                              <th>Kg</th>
+                              <th>Pz</th>
+                              <th>Kg Ent.</th>
+                              <th>Pz Ent.</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
                 </div>
               </div>
             </div> 

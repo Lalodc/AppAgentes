@@ -184,7 +184,15 @@ $(document).ready(function() {
 
   $('#collapseContraseña').on('hide.bs.collapse', function () {
     $('#btnExpandir').text('Expandir');
-  })
+  });
+
+  $('.radioBtn a').on('click', function() {
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $(this).parent().next('.' + tog).prop('value', sel);
+    $(this).parent().find('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+    $(this).parent().find('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+  });
 });
 
 $('#btnPedidos').on('shown.bs.tab', function (e) {
@@ -269,39 +277,39 @@ function verificarPedido(idPedidoPadre, idPedido) {
     $('#consorcio').val(snapshot.val().encabezado.consorcio);
 
     let productos = snapshot.val().detalle;
-    let filas = "", filas2 = "", filas3 = "";
+    let filasPedido = "", filasDegus = "", filasCambioFisico = "";
     for(let producto in productos) {
-      filas += `<tr id="${producto}">
-                  <td>${productos[producto].clave}</td>
-                  <td>${productos[producto].nombre}</td>
-                  <td>${productos[producto].pedidoPz}</td>
-                  <td>${productos[producto].pedidoKg}</td>
-                  <td><input class="form-control inputKgPedidoEnt" type="number"></td>
-                  <td><input class="form-control inputPzPedidoEnt" type="number"</td>
-                </tr>`;
+      filasPedido += `<tr id="${producto}">
+                        <td>${productos[producto].clave}</td>
+                        <td>${productos[producto].nombre}</td>
+                        <td>${productos[producto].pedidoKg}</td>
+                        <td>${productos[producto].pedidoPz}</td>
+                        <td><input class="form-control inputKgPedidoEnt" type="number"></td>
+                        <td><input class="form-control inputPzPedidoEnt" type="number"</td>
+                      </tr>`;
 
-      filas2 += `<tr id="${producto}">
-                  <td>${productos[producto].clave}</td>
-                  <td>${productos[producto].nombre}</td>
-                  <td>${productos[producto].degusPz}</td>
-                  <td>${productos[producto].degusKg}</td>
-                  <td><input class="form-control inputKgDegusEnt" type="number"></td>
-                  <td><input class="form-control inputPzDegusEnt" type="number"</td>
-                </tr>`;
+      filasDegus += `<tr id="${producto}">
+                      <td>${productos[producto].clave}</td>
+                      <td>${productos[producto].nombre}</td>
+                      <td>${productos[producto].degusKg}</td>
+                      <td>${productos[producto].degusPz}</td>
+                      <td><input class="form-control inputKgDegusEnt" type="number"></td>
+                      <td><input class="form-control inputPzDegusEnt" type="number"</td>
+                    </tr>`;
 
-      filas3 += `<tr id="${producto}">
-                  <td>${productos[producto].clave}</td>
-                  <td>${productos[producto].nombre}</td>
-                  <td>${productos[producto].cambioFisicoPz}</td>
-                  <td>${productos[producto].cambioFisicoKg}</td>
-                  <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
-                  <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
-                </tr>`;
+      filasCambioFisico += `<tr id="${producto}">
+                              <td>${productos[producto].clave}</td>
+                              <td>${productos[producto].nombre}</td>
+                              <td>${productos[producto].cambioFisicoKg}</td>
+                              <td>${productos[producto].cambioFisicoPz}</td>
+                              <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
+                              <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
+                            </tr>`;
     }
 
-    $('#tablaProductosPedido tbody').html(filas);
-    $('#tablaProductosDegustacion tbody').html(filas2)
-    $('#tablaProductosCambioFisico tbody').html(filas3)
+    $('#tablaProductosPedido tbody').html(filasPedido);
+    $('#tablaProductosDegustacion tbody').html(filasDegus)
+    $('#tablaProductosCambioFisico tbody').html(filasCambioFisico)
   });
 }
 
@@ -313,26 +321,47 @@ function verChecado(idPedidoPadre, idPedido) {
     $('#consorcioChecado').val(snapshot.val().encabezado.consorcio);
 
     let productos = snapshot.val().detalle;
-    let filas = "";
+    let filasPedido = "", filasDegus = "", filasCambioFisico = "";
     for(let producto in productos) {
-      filas += `<tr id="${producto}">
-                  <td>${productos[producto].clave}</td>
-                  <td>${productos[producto].nombre}</td>
-                  <td>${productos[producto].totalPz}</td>
-                  <td>${productos[producto].totalKg}</td>
-                  <td>${productos[producto].kilosEntregados}</td>
-                  <td>${productos[producto].piezasEntregadas}</td>
-                </tr>`;
+      filasPedido += `<tr id="${producto}">
+                        <td>${productos[producto].clave}</td>
+                        <td>${productos[producto].nombre}</td>
+                        <td>${productos[producto].pedidoPz}</td>
+                        <td>${productos[producto].pedidoKg}</td>
+                        <td>${productos[producto].kgPedidoEnt}</td>
+                        <td>${productos[producto].pzPedidoEnt}</td>
+                      </tr>`;
+
+      filasDegus += `<tr id="${producto}">
+                      <td>${productos[producto].clave}</td>
+                      <td>${productos[producto].nombre}</td>
+                      <td>${productos[producto].degusPz}</td>
+                      <td>${productos[producto].degusKg}</td>
+                      <td>${productos[producto].kgDegusEnt}</td>
+                      <td>${productos[producto].pzDegusEnt}</td>
+                    </tr>`;
+
+      filasCambioFisico += `<tr id="${producto}">
+                              <td>${productos[producto].clave}</td>
+                              <td>${productos[producto].nombre}</td>
+                              <td>${productos[producto].cambioFisicoPz}</td>
+                              <td>${productos[producto].cambioFisicoKg}</td>
+                              <td>${productos[producto].kgCambioFisicoEnt}</td>
+                              <td>${productos[producto].pzCambioFisicoEnt}</td>
+                            </tr>`;
     }
 
-    $('#tablaProductosPedidoChecado tbody').html(filas);
+    $('#tablaProductosPedidoChecado tbody').html(filasPedido);
+    $('#tablaProductosDegusChecado tbody').html(filasDegus);
+    $('#tablaProductosCambioFisicoChecado tbody').html(filasCambioFisico);
   });
 }
 
 function checarPedido(idPedidoPadre, idPedido) {
   let ids = [];
-  let kgPedidoEnt = [], pzPedidoEnt = [];
-  let bandera = true;
+  let kgPedidoEnt = [], pzPedidoEnt = []
+      kgDegusEnt = [], pzDegusEnt = []
+      kgCambioFisicoEnt = [], pzCambioFisicoEnt = [];
 
   $('#tablaProductosPedido tbody tr').each(function() {
     ids.push($(this).attr('id'));
@@ -346,13 +375,33 @@ function checarPedido(idPedidoPadre, idPedido) {
     pzPedidoEnt.push(Number($(this).val()));
   });
 
+  $('.inputKgDegusEnt').each(function() {
+    kgPedidoEnt.push(Number($(this).val()));
+  });
+
+  $('.inputPzDegusEnt').each(function() {
+    pzDegusEnt.push(Number($(this).val()));
+  });
+
+  $('.inputKgCambioFisicoEnt').each(function() {
+    kgCambioFisicoEnt.push(Number($(this).val()));
+  });
+
+  $('.inputPzCambioFisicoEnt').each(function() {
+    pzCambioFisicoEnt.push(Number($(this).val()));
+  });
+
   var i = 0,
   length = ids.length;
   for (i; i < length; i++) {
     let rutaProducto = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[i]}`);
     rutaProducto.update({
       kgPedidoEnt: kgPedidoEnt[i],
-      pzPedidoEnt: pzPedidoEnt[i]
+      pzPedidoEnt: pzPedidoEnt[i],
+      kgDegusEnt: kgDegusEnt[i],
+      pzDegusEnt: pzDegusEnt[i],
+      kgCambioFisicoEnt: kgCambioFisicoEnt[i],
+      pzCambioFisicoEnt: pzCambioFisicoEnt[i]
     });
   }
   let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/encabezado/`);
