@@ -205,66 +205,62 @@ $('#btnPedidosChecados').on('shown.bs.tab', function (e) {
 
 function mostrarPedidos() {
   let uid = auth.currentUser.uid;
-  let rutaUsuarios = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
-  rutaUsuarios.once('value', function(datos) {
-    let region = datos.val().region;
 
-    let rutaPedidosPadre = db.ref(`pedidoPadre`);
-    rutaPedidosPadre.on('value', function(snapshot) {
-      let pedidosPadre = snapshot.val();
+  let rutaPedidosPadre = db.ref(`pedidoPadre`);
+  rutaPedidosPadre.on('value', function(snapshot) {
+    let pedidosPadre = snapshot.val();
 
-      let filas = "";
-      for(pedidoPadre in pedidosPadre) {
+    let filas = "";
+    for(pedidoPadre in pedidosPadre) {
+      if(pedidosPadre[pedidoPadre].agente == uid) {
         let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
 
         for(let pedido in pedidosHijos) {
           let encabezado = pedidosHijos[pedido].encabezado;
-          
-          if(encabezado.ruta == region && encabezado.checado != true) {
+            
+          if(encabezado.checado != true) {
             filas += `<tr>
-                      <td>${encabezado.clave}</td>
-                      <td>${encabezado.cantidadProductos}</td>
-                      <td>${encabezado.totalKilos}</td>
-                      <td>${encabezado.totalPiezas}</td>
-                      <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
-                    </tr>`;
+                        <td>${encabezado.clave}</td>
+                        <td>${encabezado.cantidadProductos}</td>
+                        <td>${encabezado.totalKilos}</td>
+                        <td>${encabezado.totalPiezas}</td>
+                        <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                      </tr>`;
           }
         }
-        $('#tablaPedidos tbody').html(filas); 
-      }
-    });
+      } 
+    }
+    $('#tablaPedidos tbody').html(filas);
   });
 }
 
 function mostrarPedidosChecados() {
   let uid = auth.currentUser.uid;
-  let rutaUsuarios = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
-  rutaUsuarios.once('value', function(datos) {
-    let region = datos.val().region;
 
-    let rutaPedidosPadre = db.ref(`pedidoPadre`);
-    rutaPedidosPadre.on('value', function(snapshot) {
-      let pedidosPadre = snapshot.val();
+  let rutaPedidosPadre = db.ref(`pedidoPadre`);
+  rutaPedidosPadre.on('value', function(snapshot) {
+    let pedidosPadre = snapshot.val();
 
-      let filas = "";
-      for(pedidoPadre in pedidosPadre) {
+    let filas = "";
+    for(pedidoPadre in pedidosPadre) {
+      if(pedidosPadre[pedidoPadre].agente == uid) {
         let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
 
         for(let pedido in pedidosHijos) {
           let encabezado = pedidosHijos[pedido].encabezado;
-          if(encabezado.ruta == region && encabezado.checado == true) {
+          if(encabezado.checado == true) {
             filas += `<tr>
-                      <td>${encabezado.clave}</td>
-                      <td>${encabezado.cantidadProductos}</td>
-                      <td>${encabezado.totalKilos}</td>
-                      <td>${encabezado.totalPiezas}</td>
-                      <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
-                    </tr>`;
+                        <td>${encabezado.clave}</td>
+                        <td>${encabezado.cantidadProductos}</td>
+                        <td>${encabezado.totalKilos}</td>
+                        <td>${encabezado.totalPiezas}</td>
+                        <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                      </tr>`;
           }
         }
-        $('#tablaPedidosChecados tbody').html(filas); 
       }
-    });
+    }
+    $('#tablaPedidosChecados tbody').html(filas); 
   });
 }
 
