@@ -383,19 +383,39 @@ function checarPedido(idPedidoPadre, idPedido) {
   });
 
   $('.inputKgDegusEnt').each(function() {
-    kgPedidoEnt.push(Number($(this).val()));
+    if($(this).val().length > 0) {
+      kgDegusEnt.push(Number($(this).val()));
+    }
+    else {
+      kgDegusEnt.push(0);
+    }
   });
 
   $('.inputPzDegusEnt').each(function() {
-    pzDegusEnt.push(Number($(this).val()));
+    if($(this).val().length > 0) {
+      pzDegusEnt.push(Number($(this).val()));
+    }
+    else {
+      pzDegusEnt.push(0);
+    }
   });
 
   $('.inputKgCambioFisicoEnt').each(function() {
-    kgCambioFisicoEnt.push(Number($(this).val()));
+    if($(this).val().length > 0) {
+      kgCambioFisicoEnt.push(Number($(this).val()));
+    }
+    else {
+      kgCambioFisicoEnt.push(0);
+    }
   });
 
   $('.inputPzCambioFisicoEnt').each(function() {
-    pzCambioFisicoEnt.push(Number($(this).val()));
+    if($(this).val().length > 0) {
+      pzCambioFisicoEnt.push(Number($(this).val()));
+    }
+    else {
+      pzCambioFisicoEnt.push(0);
+    }
   });
 
   var i = 0,
@@ -420,7 +440,7 @@ function checarPedido(idPedidoPadre, idPedido) {
 
   $('.inputKilosEnt').val('');
   $('.inputPiezasEnt').val('');
-  $.toaster({ priority : 'success', title : 'Mensaje', message : 'Se ha finalizado el pedido'});
+  $.toaster({ priority : 'success', title : 'Mensaje', message : 'Se ha verificado el pedido'});
 }
 
 function limpiarCampos() {
