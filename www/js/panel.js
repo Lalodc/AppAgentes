@@ -207,7 +207,7 @@ function mostrarPedidos() {
   let uid = auth.currentUser.uid;
 
   let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
-  rutaAgentes.once('value', function(datos) {
+  rutaAgentes.on('value', function(datos) {
     let nombre = datos.val().nombre;
 
     let rutaPedidosPadre = db.ref(`pedidoPadre`);
@@ -243,8 +243,8 @@ function mostrarPedidos() {
 function mostrarPedidosChecados() {
   let uid = auth.currentUser.uid;
 
-  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes`);
-  rutaAgentes.once('value', function(datos) {
+  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
+  rutaAgentes.on('value', function(datos) {
     let nombre = datos.val().nombre;
 
     let rutaPedidosPadre = db.ref(`pedidoPadre`);
@@ -253,6 +253,7 @@ function mostrarPedidosChecados() {
 
       let filas = "";
       for(pedidoPadre in pedidosPadre) {
+        console.log(nombre)
         if(pedidosPadre[pedidoPadre].agente == nombre) {
           let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
 
@@ -266,6 +267,9 @@ function mostrarPedidosChecados() {
                           <td>${encabezado.totalPiezas}</td>
                           <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
                         </tr>`;
+
+              console.log("Id PedidoPadre:", pedidoPadre);
+            console.log("id pedido hijo", pedido)
             }
           }
         }
