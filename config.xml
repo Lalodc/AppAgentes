@@ -4,6 +4,7 @@
     <description>
         Aplicación para visualizar pedidos
     </description>
+    <icon src="res/icon/android/icon.png" />
     <icon density="mdpi" height="57" platform="ios" src="res/icon/android/icon.png" width="57" />
     <platform name="android">
         <icon density="ldpi" src="res/icon/android/ldpi.png" />
