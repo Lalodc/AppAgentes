@@ -6,6 +6,40 @@ function logout() {
   auth.signOut();
 }
 
+$(document).ready(function() {
+  $('.input-group.date').datepicker({
+    autoclose: true,
+    format: "dd/mm/yyyy",
+    language: "es"
+  });
+
+  $.toaster({
+    settings: {
+      'timeout': 3000
+    }
+  });
+
+  $('#tabPerfil').on('shown.bs.tab', function (e) {
+    mostrarDatosPerfil();
+  })
+
+  $('#collapseContraseña').on('show.bs.collapse', function () {
+    $('#btnExpandir').text('Cerrar');
+  })
+
+  $('#collapseContraseña').on('hide.bs.collapse', function () {
+    $('#btnExpandir').text('Expandir');
+  });
+
+  $('.radioBtn a').on('click', function() {
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $(this).parent().next('.' + tog).prop('value', sel);
+    $(this).parent().find('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
+    $(this).parent().find('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
+  });
+});
+
 function mostrarDatosPerfil() {
   let uid = auth.currentUser.uid;
   let usuariosRef = db.ref(`usuarios/tiendas/supervisoras/${uid}`);
@@ -139,10 +173,21 @@ function verNotificaciones() {
 function haySesion() {
   auth.onAuthStateChanged(function (user) {
     //si hay un usuario
-    if (user) {
+    if (user != null) {
       mostrarNotificaciones();
-      /*mostrarContador();*/
-      // obtenerRegion();
+      
+
+      let uid = auth.currentUser.uid;
+      db.ref(`usuarios/administrativo/ventas/agentes/${uid}`).on('value', (datos) => {
+        let nombre = datos.val().nombre;
+
+        db.ref('pedidoPadre').on('value', (pedidosPadre) => {
+          let datosPedido = pedidosPadre.val();
+
+          localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
+          mostrarPedidos();
+        })
+      });
     }
     else {
       $(location).attr("href", "index.html");
@@ -161,40 +206,6 @@ function obtenerRegion() {
 
 haySesion();
 
-$(document).ready(function() {
-  $('.input-group.date').datepicker({
-    autoclose: true,
-    format: "dd/mm/yyyy",
-    language: "es"
-  });
-
-  $.toaster({
-    settings: {
-      'timeout': 3000
-    }
-  });
-
-  $('#tabPerfil').on('shown.bs.tab', function (e) {
-    mostrarDatosPerfil();
-  })
-
-  $('#collapseContraseña').on('show.bs.collapse', function () {
-    $('#btnExpandir').text('Cerrar');
-  })
-
-  $('#collapseContraseña').on('hide.bs.collapse', function () {
-    $('#btnExpandir').text('Expandir');
-  });
-
-  $('.radioBtn a').on('click', function() {
-    var sel = $(this).data('title');
-    var tog = $(this).data('toggle');
-    $(this).parent().next('.' + tog).prop('value', sel);
-    $(this).parent().find('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
-    $(this).parent().find('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
-  });
-});
-
 $('#btnPedidos').on('shown.bs.tab', function (e) {
   mostrarPedidos();
 });
@@ -204,168 +215,143 @@ $('#btnPedidosChecados').on('shown.bs.tab', function (e) {
 });
 
 function mostrarPedidos() {
-  let uid = auth.currentUser.uid;
+  let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
 
-  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
-  rutaAgentes.on('value', function(datos) {
-    let nombre = datos.val().nombre;
+  let filas = "";
 
-    let rutaPedidosPadre = db.ref(`pedidoPadre`);
-    rutaPedidosPadre.on('value', function(snapshot) {
-      let pedidosPadre = snapshot.val();
+  for(let pedidoPadre in pedidosPadre) {
+    if(pedidosPadre[pedidoPadre].agente == nombre) {
+      let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
 
-      let filas = "";
-
-      for(let pedidoPadre in pedidosPadre) {
-        if(pedidosPadre[pedidoPadre].agente == nombre) {
-          let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
-
-          for(let pedido in pedidosHijos) {
-            let encabezado = pedidosHijos[pedido].encabezado;
+      for(let pedido in pedidosHijos) {
+        let encabezado = pedidosHijos[pedido].encabezado;
               
-            if(encabezado.checado != true) {
-              filas += `<tr>
-                          <td>${encabezado.clave}</td>
-                          <td>${encabezado.cantidadProductos}</td>
-                          <td>${encabezado.totalKilos}</td>
-                          <td>${encabezado.totalPiezas}</td>
-                          <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
-                        </tr>`;
-            }
+        if(encabezado.checado != true) {
+          filas += `<tr>
+                      <td>${encabezado.clave}</td>
+                      <td>${encabezado.cantidadProductos}</td>
+                      <td>${encabezado.totalKilos}</td>
+                      <td>${encabezado.totalPiezas}</td>
+                      <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                    </tr>`;
           }
-        } 
-      }
-      $('#tablaPedidos tbody').html(filas);
-    });
-  })
+        }
+      } 
+    }
+  $('#tablaPedidos tbody').html(filas); 
 }
 
 function mostrarPedidosChecados() {
-  let uid = auth.currentUser.uid;
+  let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
 
-  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
-  rutaAgentes.on('value', function(datos) {
-    let nombre = datos.val().nombre;
+  let filas = "";
+  for(pedidoPadre in pedidosPadre) {
+    if(pedidosPadre[pedidoPadre].agente == nombre) {
+      let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
 
-    let rutaPedidosPadre = db.ref(`pedidoPadre`);
-    rutaPedidosPadre.on('value', function(snapshot) {
-      let pedidosPadre = snapshot.val();
-
-      let filas = "";
-      for(pedidoPadre in pedidosPadre) {
-        console.log(nombre)
-        if(pedidosPadre[pedidoPadre].agente == nombre) {
-          let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
-
-          for(let pedido in pedidosHijos) {
-            let encabezado = pedidosHijos[pedido].encabezado;
-            if(encabezado.checado == true) {
-              filas += `<tr>
-                          <td>${encabezado.clave}</td>
-                          <td>${encabezado.cantidadProductos}</td>
-                          <td>${encabezado.totalKilos}</td>
-                          <td>${encabezado.totalPiezas}</td>
-                          <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
-                        </tr>`;
-
-              console.log("Id PedidoPadre:", pedidoPadre);
-            console.log("id pedido hijo", pedido)
-            }
-          }
+      for(let pedido in pedidosHijos) {
+        let encabezado = pedidosHijos[pedido].encabezado;
+        if(encabezado.checado == true) {
+        filas += `<tr>
+                    <td>${encabezado.clave}</td>
+                    <td>${encabezado.cantidadProductos}</td>
+                    <td>${encabezado.totalKilos}</td>
+                    <td>${encabezado.totalPiezas}</td>
+                    <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                  </tr>`;
         }
       }
-      $('#tablaPedidosChecados tbody').html(filas); 
-    });
-  });
+    }
+  }
+  $('#tablaPedidosChecados tbody').html(filas); 
 }
 
 function verificarPedido(idPedidoPadre, idPedido) {
-  let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}`);
-  rutaPedidoHijo.once('value', function(snapshot) {
+  let pedidoPadre = JSON.parse(localStorage.getItem('pedidosPadre'))[idPedidoPadre];
+  let pedidoHijo = pedidoPadre[idPedido];
+  console.log(pedidoHijo);
 
-    $('#btnChecarPedido').attr('onclick', `checarPedido('${idPedidoPadre}', '${idPedido}')`);
-    $('#tienda').val(snapshot.val().encabezado.tienda);
-    $('#consorcio').val(snapshot.val().encabezado.consorcio);
+  $('#btnChecarPedido').attr('onclick', `checarPedido('${idPedidoPadre}', '${idPedido}')`);
+  $('#tienda').val(pedidoHijo.encabezado.tienda);
+  $('#consorcio').val(pedidoHijo.encabezado.consorcio);
 
-    let productos = snapshot.val().detalle;
-    let filasPedido = "", filasDegus = "", filasCambioFisico = "";
-    for(let producto in productos) {
-      filasPedido += `<tr id="${producto}">
-                        <td>${productos[producto].clave}</td>
-                        <td>${productos[producto].nombre}</td>
-                        <td>${productos[producto].pedidoKg}</td>
-                        <td>${productos[producto].pedidoPz}</td>
-                        <td><input class="form-control inputKgPedidoEnt" type="number"></td>
-                        <td><input class="form-control inputPzPedidoEnt" type="number"</td>
-                      </tr>`;
-
-      filasDegus += `<tr id="${producto}">
+  let productos = pedidoHijo.detalle;
+  let filasPedido = "", filasDegus = "", filasCambioFisico = "";
+  for(let producto in productos) {
+    filasPedido += `<tr id="${producto}">
                       <td>${productos[producto].clave}</td>
                       <td>${productos[producto].nombre}</td>
-                      <td>${productos[producto].degusKg}</td>
-                      <td>${productos[producto].degusPz}</td>
-                      <td><input class="form-control inputKgDegusEnt" type="number"></td>
-                      <td><input class="form-control inputPzDegusEnt" type="number"</td>
+                      <td>${productos[producto].pedidoKg}</td>
+                      <td>${productos[producto].pedidoPz}</td>
+                      <td><input class="form-control inputKgPedidoEnt" type="number"></td>
+                      <td><input class="form-control inputPzPedidoEnt" type="number"</td>
                     </tr>`;
 
-      filasCambioFisico += `<tr id="${producto}">
-                              <td>${productos[producto].clave}</td>
-                              <td>${productos[producto].nombre}</td>
-                              <td>${productos[producto].cambioFisicoKg}</td>
-                              <td>${productos[producto].cambioFisicoPz}</td>
-                              <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
-                              <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
-                            </tr>`;
-    }
+    filasDegus += `<tr id="${producto}">
+                    <td>${productos[producto].clave}</td>
+                    <td>${productos[producto].nombre}</td>
+                    <td>${productos[producto].degusKg}</td>
+                    <td>${productos[producto].degusPz}</td>
+                    <td><input class="form-control inputKgDegusEnt" type="number"></td>
+                    <td><input class="form-control inputPzDegusEnt" type="number"</td>
+                  </tr>`;
 
-    $('#tablaProductosPedido tbody').html(filasPedido);
-    $('#tablaProductosDegustacion tbody').html(filasDegus)
-    $('#tablaProductosCambioFisico tbody').html(filasCambioFisico)
-  });
+    filasCambioFisico += `<tr id="${producto}">
+                            <td>${productos[producto].clave}</td>
+                            <td>${productos[producto].nombre}</td>
+                            <td>${productos[producto].cambioFisicoKg}</td>
+                            <td>${productos[producto].cambioFisicoPz}</td>
+                            <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
+                            <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
+                          </tr>`;
+  }
+
+  $('#tablaProductosPedido tbody').html(filasPedido);
+  $('#tablaProductosDegustacion tbody').html(filasDegus)
+  $('#tablaProductosCambioFisico tbody').html(filasCambioFisico)
 }
 
 function verChecado(idPedidoPadre, idPedido) {
-  let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}`);
-  rutaPedidoHijo.once('value', function(snapshot) {
+  let pedidoPadre = JSON.parse(localStorage.getItem('pedidosPadre'))[idPedidoPadre];
+  let pedidoHijo = pedidoPadre[idPedido];
 
-    $('#tiendaChecado').val(snapshot.val().encabezado.tienda);
-    $('#consorcioChecado').val(snapshot.val().encabezado.consorcio);
+  $('#tiendaChecado').val(pedidoHijo.encabezado.tienda);
+  $('#consorcioChecado').val(pedidoHijo.encabezado.consorcio);
 
-    let productos = snapshot.val().detalle;
-    let filasPedido = "", filasDegus = "", filasCambioFisico = "";
-    for(let producto in productos) {
-      filasPedido += `<tr id="${producto}">
-                        <td>${productos[producto].clave}</td>
-                        <td>${productos[producto].nombre}</td>
-                        <td>${productos[producto].pedidoPz}</td>
-                        <td>${productos[producto].pedidoKg}</td>
-                        <td>${productos[producto].kgPedidoEnt}</td>
-                        <td>${productos[producto].pzPedidoEnt}</td>
-                      </tr>`;
-
-      filasDegus += `<tr id="${producto}">
+  let productos = pedidoHijo.detalle;
+  let filasPedido = "", filasDegus = "", filasCambioFisico = "";
+  for(let producto in productos) {
+    filasPedido += `<tr id="${producto}">
                       <td>${productos[producto].clave}</td>
                       <td>${productos[producto].nombre}</td>
-                      <td>${productos[producto].degusPz}</td>
-                      <td>${productos[producto].degusKg}</td>
-                      <td>${productos[producto].kgDegusEnt}</td>
-                      <td>${productos[producto].pzDegusEnt}</td>
+                      <td>${productos[producto].pedidoPz}</td>
+                      <td>${productos[producto].pedidoKg}</td>
+                      <td>${productos[producto].kgPedidoEnt}</td>
+                      <td>${productos[producto].pzPedidoEnt}</td>
                     </tr>`;
 
-      filasCambioFisico += `<tr id="${producto}">
-                              <td>${productos[producto].clave}</td>
-                              <td>${productos[producto].nombre}</td>
-                              <td>${productos[producto].cambioFisicoPz}</td>
-                              <td>${productos[producto].cambioFisicoKg}</td>
-                              <td>${productos[producto].kgCambioFisicoEnt}</td>
-                              <td>${productos[producto].pzCambioFisicoEnt}</td>
-                            </tr>`;
-    }
+    filasDegus += `<tr id="${producto}">
+                    <td>${productos[producto].clave}</td>
+                    <td>${productos[producto].nombre}</td>
+                    <td>${productos[producto].degusPz}</td>
+                    <td>${productos[producto].degusKg}</td>
+                    <td>${productos[producto].kgDegusEnt}</td>
+                    <td>${productos[producto].pzDegusEnt}</td>
+                  </tr>`;
 
-    $('#tablaProductosPedidoChecado tbody').html(filasPedido);
-    $('#tablaProductosDegusChecado tbody').html(filasDegus);
-    $('#tablaProductosCambioFisicoChecado tbody').html(filasCambioFisico);
-  });
+    filasCambioFisico += `<tr id="${producto}">
+                            <td>${productos[producto].clave}</td>
+                            <td>${productos[producto].nombre}</td>
+                            <td>${productos[producto].cambioFisicoPz}</td>
+                            <td>${productos[producto].cambioFisicoKg}</td>
+                            <td>${productos[producto].kgCambioFisicoEnt}</td>
+                            <td>${productos[producto].pzCambioFisicoEnt}</td>
+                          </tr>`;
+  }
+
+  $('#tablaProductosPedidoChecado tbody').html(filasPedido);
+  $('#tablaProductosDegusChecado tbody').html(filasDegus);
+  $('#tablaProductosCambioFisicoChecado tbody').html(filasCambioFisico);
 }
 
 function checarPedido(idPedidoPadre, idPedido) {
