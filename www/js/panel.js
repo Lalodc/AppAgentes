@@ -132,10 +132,10 @@ function mostrarNotificaciones() {
 
     let arrayNotificaciones = [];
     for(let notificacion in lista) {
-      arrayNotificaciones.push(lista[notificacion]);
+      arrayNotificaciones.unshift(lista[notificacion]);
     }
 
-    arrayNotificaciones.reverse();
+    //arrayNotificaciones.reverse();
 
     for(let i in arrayNotificaciones) {
       let date = arrayNotificaciones[i].fecha;
@@ -181,12 +181,12 @@ function haySesion() {
       db.ref(`usuarios/administrativo/ventas/agentes/${uid}`).on('value', (datos) => {
         let nombre = datos.val().nombre;
 
-        db.ref('pedidoPadre').on('value', (pedidosPadre) => {
+        db.ref('pedidoPadre').orderByChild('estado').equalTo('Cargado').on('value', (pedidosPadre) => {
           let datosPedido = pedidosPadre.val();
 
           localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
           mostrarPedidos();
-        })
+        });
       });
     }
     else {
