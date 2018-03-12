@@ -230,6 +230,8 @@ function mostrarPedidos() {
 
         for(let pedido in pedidosHijos) {
           let encabezado = pedidosHijos[pedido].encabezado;
+          let detalle = pedidosHijos[pedido].detalle;
+          let cantidadProductos = Object.keys(detalle).length;
                 
           if(encabezado.checado != true) {
             filas += `<tr>
@@ -259,6 +261,8 @@ function mostrarPedidosChecados() {
     for(pedidoPadre in pedidosPadre) {
       if(pedidosPadre[pedidoPadre].agente == nombre) {
         let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
+        let detalle = pedidosHijos[pedido].detalle;
+        let cantidadProductos = Object.keys(detalle).length;
 
         for(let pedido in pedidosHijos) {
           let encabezado = pedidosHijos[pedido].encabezado;
