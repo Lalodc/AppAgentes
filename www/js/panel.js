@@ -215,55 +215,67 @@ $('#btnPedidosChecados').on('shown.bs.tab', function (e) {
 });
 
 function mostrarPedidos() {
-  let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
+  let uid = auth.currentUser.uid;
 
-  let filas = "";
+  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
+  rutaAgentes.on('value', function(datos) {
+    let nombre = datos.val().nombre;
+    let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
 
-  for(let pedidoPadre in pedidosPadre) {
-    if(pedidosPadre[pedidoPadre].agente == nombre) {
-      let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
+    let filas = "";
 
-      for(let pedido in pedidosHijos) {
-        let encabezado = pedidosHijos[pedido].encabezado;
-              
-        if(encabezado.checado != true) {
+    for(let pedidoPadre in pedidosPadre) {
+      if(pedidosPadre[pedidoPadre].agente == nombre) {
+        let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
+
+        for(let pedido in pedidosHijos) {
+          let encabezado = pedidosHijos[pedido].encabezado;
+                
+          if(encabezado.checado != true) {
+            filas += `<tr>
+                        <td>${encabezado.clave}</td>
+                        <td>${encabezado.cantidadProductos}</td>
+                        <td>${encabezado.totalKilos}</td>
+                        <td>${encabezado.totalPiezas}</td>
+                        <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                      </tr>`;
+          }
+        }
+      } 
+    }
+    $('#tablaPedidos tbody').html(filas);
+  });
+}
+
+function mostrarPedidosChecados() {
+  let uid = auth.currentUser.uid;
+
+  let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
+  rutaAgentes.on('value', function(datos) {
+    let nombre = datos.val().nombre;
+    let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
+
+    let filas = "";
+    for(pedidoPadre in pedidosPadre) {
+      if(pedidosPadre[pedidoPadre].agente == nombre) {
+        let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
+
+        for(let pedido in pedidosHijos) {
+          let encabezado = pedidosHijos[pedido].encabezado;
+          if(encabezado.checado == true) {
           filas += `<tr>
                       <td>${encabezado.clave}</td>
                       <td>${encabezado.cantidadProductos}</td>
                       <td>${encabezado.totalKilos}</td>
                       <td>${encabezado.totalPiezas}</td>
-                      <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
+                      <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
                     </tr>`;
           }
         }
-      } 
-    }
-  $('#tablaPedidos tbody').html(filas); 
-}
-
-function mostrarPedidosChecados() {
-  let pedidosPadre = JSON.parse(localStorage.getItem('pedidosPadre'));
-
-  let filas = "";
-  for(pedidoPadre in pedidosPadre) {
-    if(pedidosPadre[pedidoPadre].agente == nombre) {
-      let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
-
-      for(let pedido in pedidosHijos) {
-        let encabezado = pedidosHijos[pedido].encabezado;
-        if(encabezado.checado == true) {
-        filas += `<tr>
-                    <td>${encabezado.clave}</td>
-                    <td>${encabezado.cantidadProductos}</td>
-                    <td>${encabezado.totalKilos}</td>
-                    <td>${encabezado.totalPiezas}</td>
-                    <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
-                  </tr>`;
-        }
       }
     }
-  }
-  $('#tablaPedidosChecados tbody').html(filas); 
+    $('#tablaPedidosChecados tbody').html(filas);
+  });
 }
 
 function verificarPedido(idPedidoPadre, idPedido) {
