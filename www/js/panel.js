@@ -236,7 +236,7 @@ function mostrarPedidos() {
           if(encabezado.checado != true) {
             filas += `<tr>
                         <td>${encabezado.clave}</td>
-                        <td>${encabezado.cantidadProductos}</td>
+                        <td>${cantidadProductos}</td>
                         <td>${encabezado.totalKilos}</td>
                         <td>${encabezado.totalPiezas}</td>
                         <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
@@ -269,7 +269,7 @@ function mostrarPedidosChecados() {
           if(encabezado.checado == true) {
           filas += `<tr>
                       <td>${encabezado.clave}</td>
-                      <td>${encabezado.cantidadProductos}</td>
+                      <td>${cantidadProductos}</td>
                       <td>${encabezado.totalKilos}</td>
                       <td>${encabezado.totalPiezas}</td>
                       <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
