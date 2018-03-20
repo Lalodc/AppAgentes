@@ -237,8 +237,8 @@ function mostrarPedidos() {
             filas += `<tr>
                         <td>${encabezado.clave}</td>
                         <td>${cantidadProductos}</td>
-                        <td>${encabezado.totalKilos}</td>
                         <td>${encabezado.totalPiezas}</td>
+                        <td>${encabezado.totalKilos}</td>
                         <td><a onclick="verificarPedido('${pedidoPadre}', '${pedido}')" class="btn btn-primary btn-xs" href="#pedido" aria-controls="pedido" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
                       </tr>`;
           }
@@ -261,17 +261,17 @@ function mostrarPedidosChecados() {
     for(pedidoPadre in pedidosPadre) {
       if(pedidosPadre[pedidoPadre].agente == nombre) {
         let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
-        let detalle = pedidosHijos[pedido].detalle;
-        let cantidadProductos = Object.keys(detalle).length;
 
         for(let pedido in pedidosHijos) {
           let encabezado = pedidosHijos[pedido].encabezado;
+          let detalle = pedidosHijos[pedido].detalle;
+          let cantidadProductos = Object.keys(detalle).length;
           if(encabezado.checado == true) {
           filas += `<tr>
                       <td>${encabezado.clave}</td>
                       <td>${cantidadProductos}</td>
-                      <td>${encabezado.totalKilos}</td>
                       <td>${encabezado.totalPiezas}</td>
+                      <td>${encabezado.totalKilos}</td>
                       <td><a onclick="verChecado('${pedidoPadre}', '${pedido}')" class="btn btn-success btn-xs" href="#pedidoChecado" aria-controls="pedidoChecado" role="tab" data-toggle="tab"><i class="material-icons">remove_red_eye</i></a></td>
                     </tr>`;
           }
@@ -284,10 +284,9 @@ function mostrarPedidosChecados() {
 
 function verificarPedido(idPedidoPadre, idPedido) {
   let pedidoPadre = JSON.parse(localStorage.getItem('pedidosPadre'))[idPedidoPadre];
-  let pedidoHijo = pedidoPadre[idPedido];
-  console.log(pedidoHijo);
+  let pedidoHijo = pedidoPadre.pedidosHijos[idPedido];
 
-  $('#btnChecarPedido').attr('onclick', `checarPedido('${idPedidoPadre}', '${idPedido}')`);
+  $('#btnChecarPedido').attr('onclick', `comprobarPedido('${idPedidoPadre}', '${idPedido}')`);
   $('#tienda').val(pedidoHijo.encabezado.tienda);
   $('#consorcio').val(pedidoHijo.encabezado.consorcio);
 
@@ -297,28 +296,28 @@ function verificarPedido(idPedidoPadre, idPedido) {
     filasPedido += `<tr id="${producto}">
                       <td>${productos[producto].clave}</td>
                       <td>${productos[producto].nombre}</td>
-                      <td>${productos[producto].pedidoKg}</td>
                       <td>${productos[producto].pedidoPz}</td>
-                      <td><input class="form-control inputKgPedidoEnt" type="number"></td>
+                      <td>${productos[producto].pedidoKg}</td>
                       <td><input class="form-control inputPzPedidoEnt" type="number"</td>
+                      <td><input class="form-control inputKgPedidoEnt" type="number"></td>  
                     </tr>`;
 
     filasDegus += `<tr id="${producto}">
                     <td>${productos[producto].clave}</td>
                     <td>${productos[producto].nombre}</td>
-                    <td>${productos[producto].degusKg}</td>
                     <td>${productos[producto].degusPz}</td>
-                    <td><input class="form-control inputKgDegusEnt" type="number"></td>
+                    <td>${productos[producto].degusKg}</td>
                     <td><input class="form-control inputPzDegusEnt" type="number"</td>
+                    <td><input class="form-control inputKgDegusEnt" type="number"></td>
                   </tr>`;
 
     filasCambioFisico += `<tr id="${producto}">
                             <td>${productos[producto].clave}</td>
-                            <td>${productos[producto].nombre}</td>
-                            <td>${productos[producto].cambioFisicoKg}</td>
+                            <td>${productos[producto].nombre}</td>     
                             <td>${productos[producto].cambioFisicoPz}</td>
-                            <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
+                            <td>${productos[producto].cambioFisicoKg}</td>
                             <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
+                            <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
                           </tr>`;
   }
 
@@ -329,7 +328,7 @@ function verificarPedido(idPedidoPadre, idPedido) {
 
 function verChecado(idPedidoPadre, idPedido) {
   let pedidoPadre = JSON.parse(localStorage.getItem('pedidosPadre'))[idPedidoPadre];
-  let pedidoHijo = pedidoPadre[idPedido];
+  let pedidoHijo = pedidoPadre.pedidosHijos[idPedido];
 
   $('#tiendaChecado').val(pedidoHijo.encabezado.tienda);
   $('#consorcioChecado').val(pedidoHijo.encabezado.consorcio);
@@ -342,8 +341,8 @@ function verChecado(idPedidoPadre, idPedido) {
                       <td>${productos[producto].nombre}</td>
                       <td>${productos[producto].pedidoPz}</td>
                       <td>${productos[producto].pedidoKg}</td>
-                      <td>${productos[producto].kgPedidoEnt}</td>
                       <td>${productos[producto].pzPedidoEnt}</td>
+                      <td>${productos[producto].kgPedidoEnt}</td>
                     </tr>`;
 
     filasDegus += `<tr id="${producto}">
@@ -351,8 +350,8 @@ function verChecado(idPedidoPadre, idPedido) {
                     <td>${productos[producto].nombre}</td>
                     <td>${productos[producto].degusPz}</td>
                     <td>${productos[producto].degusKg}</td>
-                    <td>${productos[producto].kgDegusEnt}</td>
                     <td>${productos[producto].pzDegusEnt}</td>
+                    <td>${productos[producto].kgDegusEnt}</td>
                   </tr>`;
 
     filasCambioFisico += `<tr id="${producto}">
@@ -360,14 +359,33 @@ function verChecado(idPedidoPadre, idPedido) {
                             <td>${productos[producto].nombre}</td>
                             <td>${productos[producto].cambioFisicoPz}</td>
                             <td>${productos[producto].cambioFisicoKg}</td>
-                            <td>${productos[producto].kgCambioFisicoEnt}</td>
                             <td>${productos[producto].pzCambioFisicoEnt}</td>
+                            <td>${productos[producto].kgCambioFisicoEnt}</td>
                           </tr>`;
   }
 
   $('#tablaProductosPedidoChecado tbody').html(filasPedido);
   $('#tablaProductosDegusChecado tbody').html(filasDegus);
   $('#tablaProductosCambioFisicoChecado tbody').html(filasCambioFisico);
+}
+
+function comprobarPedido(idPedidoPadre, idPedido) {
+  swal({
+    title: "¿Está seguro que desea finalizar este pedido?",
+    text: "Esta operación no podrá deshacerse.",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      checarPedido(idPedidoPadre, idPedido);
+
+      swal("El pedido se ha finalizado con exito", {
+        icon: "success",
+      });
+    }
+  });
 }
 
 function checarPedido(idPedidoPadre, idPedido) {
