@@ -430,6 +430,23 @@ img::-moz-selection {
   border-color: #1a237e;
 }
 
+.btn-naranja {
+  color: #fff;
+  background-color: rgb(255, 110, 2);
+  border-color: rgb(255, 110, 2);
+}
+.btn-naranja:focus,
+.btn-naranja.focus {
+  color: #fff;
+  background-color: rgb(255, 110, 2);
+  border-color: rgb(255, 110, 2);
+}
+.btn-naranja:hover {
+  color: #fff;
+  background-color: rgb(255, 110, 2);
+  border-color: rgb(255, 110, 2);
+}
+
 .loader {
   font-size: 10px;
   margin: 50px auto;
