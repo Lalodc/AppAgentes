@@ -181,14 +181,15 @@ function haySesion() {
       db.ref(`usuarios/administrativo/ventas/agentes/${uid}`).on('value', (datos) => {
         let nombre = datos.val().nombre;
 
-        db.ref('pedidoPadre').orderByChild('estado').equalTo('Cargado').on('value', (pedidosPadre) => {
+        db.ref('pedidoPadre').on('value', (pedidosPadre) => {
           let datosPedido = pedidosPadre.val();
-
-          //localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
-          localforage.setItem('pedidosPadre', datosPedido, err => {
-            console.log(err ? err : 'Pedidos padre guardadas en localforage')
-            mostrarPedidos();
-          });
+          if(datosPedido.estado == "Verificado" || datosPedido.estado == "Cargado") {
+            //localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
+            localforage.setItem('pedidosPadre', datosPedido, err => {
+              console.log(err ? err : 'Pedidos padre guardadas en localforage')
+              mostrarPedidos();
+            });
+          }
         });
       });
     }
@@ -233,12 +234,12 @@ function mostrarPedidos() {
       for(let pedidoPadre in pedidosPadre) {
         if(pedidosPadre[pedidoPadre].agente == nombre) {
           let pedidosHijos = pedidosPadre[pedidoPadre].pedidosHijos;
-
           for(let pedido in pedidosHijos) {
             let encabezado = pedidosHijos[pedido].encabezado;
             let detalle = pedidosHijos[pedido].detalle;
+
             let cantidadProductos = Object.keys(detalle).length;
-                  
+               
             if(encabezado.checado != true) {
               filas += `<tr>
                           <td>${encabezado.clave}</td>
@@ -259,11 +260,9 @@ function mostrarPedidos() {
 
 function mostrarPedidosChecados() {
   let uid = auth.currentUser.uid;
-
   let rutaAgentes = db.ref(`usuarios/administrativo/ventas/agentes/${uid}`);
   rutaAgentes.on('value', function(datos) {
     let nombre = datos.val().nombre;
-    
     localforage.getItem('pedidosPadre', (err, value) => {
       console.log('Obteniendo pedidos padre de localforage');
       let pedidosPadre = value;
@@ -306,6 +305,16 @@ function verificarPedido(idPedidoPadre, idPedido) {
     $('#tienda').val(pedidoHijo.encabezado.tienda);
     $('#consorcio').val(pedidoHijo.encabezado.consorcio);
 
+    let disabled;
+    if(pedidoPadre.estado == "Verificado") {
+      disabled = "disabled";
+      $('#alertaVerificado').html('Este pedido aún no ha sido cargado en almacén').removeClass('hidden');
+    }
+    else if(pedidoPadre.estado == "Cargado") {
+      disabled = "";
+      $('#alertaVerificado').addClass('hidden');
+    }
+
     let productos = pedidoHijo.detalle;
     let filasPedido = "", filasDegus = "", filasCambioFisico = "";
     for(let producto in productos) {
@@ -314,8 +323,8 @@ function verificarPedido(idPedidoPadre, idPedido) {
                         <td>${productos[producto].nombre}</td>
                         <td>${productos[producto].pedidoPz}</td>
                         <td>${productos[producto].pedidoKg}</td>
-                        <td><input class="form-control inputPzPedidoEnt" type="number"</td>
-                        <td><input class="form-control inputKgPedidoEnt" type="number"></td>  
+                        <td><input class="form-control inputPzPedidoEnt" type="number" ${disabled}</td>
+                        <td><input class="form-control inputKgPedidoEnt" type="number" ${disabled}></td>  
                       </tr>`;
 
       filasDegus += `<tr id="${producto}">
@@ -323,8 +332,8 @@ function verificarPedido(idPedidoPadre, idPedido) {
                       <td>${productos[producto].nombre}</td>
                       <td>${productos[producto].degusPz}</td>
                       <td>${productos[producto].degusKg}</td>
-                      <td><input class="form-control inputPzDegusEnt" type="number"</td>
-                      <td><input class="form-control inputKgDegusEnt" type="number"></td>
+                      <td><input class="form-control inputPzDegusEnt" type="number" ${disabled}</td>
+                      <td><input class="form-control inputKgDegusEnt" type="number" ${disabled}></td>
                     </tr>`;
 
       filasCambioFisico += `<tr id="${producto}">
@@ -332,8 +341,8 @@ function verificarPedido(idPedidoPadre, idPedido) {
                               <td>${productos[producto].nombre}</td>     
                               <td>${productos[producto].cambioFisicoPz}</td>
                               <td>${productos[producto].cambioFisicoKg}</td>
-                              <td><input class="form-control inputPzCambioFisicoEnt" type="number"</td>
-                              <td><input class="form-control inputKgCambioFisicoEnt" type="number"></td>
+                              <td><input class="form-control inputPzCambioFisicoEnt" type="number" ${disabled}</td>
+                              <td><input class="form-control inputKgCambioFisicoEnt" type="number" ${disabled}></td>
                             </tr>`;
     }
 
