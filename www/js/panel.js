@@ -183,13 +183,20 @@ function haySesion() {
 
         db.ref('pedidoPadre').on('value', (pedidosPadre) => {
           let datosPedido = pedidosPadre.val();
-          if(datosPedido.estado == "Verificado" || datosPedido.estado == "Cargado") {
-            //localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
-            localforage.setItem('pedidosPadre', datosPedido, err => {
-              console.log(err ? err : 'Pedidos padre guardadas en localforage')
-              mostrarPedidos();
-            });
-          }
+          let objetoPedidos = {};
+          pedidosPadre.forEach(function(pedidoPadre) {
+            console.log(pedidoPadre.val())
+            if(pedidoPadre.val().estado == "Verificado" || pedidoPadre.val().estado == "Cargado") {
+              //localStorage.setItem('pedidosPadre', JSON.stringify(datosPedido));
+              objetoPedidos[pedidoPadre.key] = pedidoPadre.val();
+              console.log("hola")
+            } 
+          });
+          console.log(objetoPedidos)
+          localforage.setItem('pedidosPadre', objetoPedidos, err => {
+            console.log(err ? err : 'Pedidos padre guardadas en localforage')
+            mostrarPedidos();
+          });
         });
       });
     }
@@ -323,7 +330,7 @@ function verificarPedido(idPedidoPadre, idPedido) {
                         <td>${productos[producto].nombre}</td>
                         <td>${productos[producto].pedidoPz}</td>
                         <td>${productos[producto].pedidoKg}</td>
-                        <td><input class="form-control inputPzPedidoEnt" type="number" ${disabled}</td>
+                        <td><input class="form-control inputPzPedidoEnt" type="number" ${disabled}></td>
                         <td><input class="form-control inputKgPedidoEnt" type="number" ${disabled}></td>  
                       </tr>`;
 
@@ -332,7 +339,7 @@ function verificarPedido(idPedidoPadre, idPedido) {
                       <td>${productos[producto].nombre}</td>
                       <td>${productos[producto].degusPz}</td>
                       <td>${productos[producto].degusKg}</td>
-                      <td><input class="form-control inputPzDegusEnt" type="number" ${disabled}</td>
+                      <td><input class="form-control inputPzDegusEnt" type="number" ${disabled}></td>
                       <td><input class="form-control inputKgDegusEnt" type="number" ${disabled}></td>
                     </tr>`;
 
@@ -341,7 +348,7 @@ function verificarPedido(idPedidoPadre, idPedido) {
                               <td>${productos[producto].nombre}</td>     
                               <td>${productos[producto].cambioFisicoPz}</td>
                               <td>${productos[producto].cambioFisicoKg}</td>
-                              <td><input class="form-control inputPzCambioFisicoEnt" type="number" ${disabled}</td>
+                              <td><input class="form-control inputPzCambioFisicoEnt" type="number" ${disabled}></td>
                               <td><input class="form-control inputKgCambioFisicoEnt" type="number" ${disabled}></td>
                             </tr>`;
     }
@@ -475,15 +482,20 @@ function checarPedido(idPedidoPadre, idPedido) {
   var i = 0,
   length = ids.length;
   for (i; i < length; i++) {
-    let rutaProducto = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[i]}`);
-    rutaProducto.update({
-      kgPedidoEnt: kgPedidoEnt[i],
-      pzPedidoEnt: pzPedidoEnt[i],
-      kgDegusEnt: kgDegusEnt[i],
-      pzDegusEnt: pzDegusEnt[i],
-      kgCambioFisicoEnt: kgCambioFisicoEnt[i],
-      pzCambioFisicoEnt: pzCambioFisicoEnt[i]
-    });
+    db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[id]}`).once('value', function(snapshot) {
+      let kgPedido = snapshot.pedidosKg;
+      let nivelServicio = Number(kgPedidoEnt[i] / kgPedido);
+      
+      db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/detalle/${ids[i]}`).update({
+        kgPedidoEnt: kgPedidoEnt[i],
+        pzPedidoEnt: pzPedidoEnt[i],
+        kgDegusEnt: kgDegusEnt[i],
+        pzDegusEnt: pzDegusEnt[i],
+        kgCambioFisicoEnt: kgCambioFisicoEnt[i],
+        pzCambioFisicoEnt: pzCambioFisicoEnt[i],
+        nivelServicio: nivelServicio
+      });
+    })
   }
   let rutaPedidoHijo = db.ref(`pedidoPadre/${idPedidoPadre}/pedidosHijos/${idPedido}/encabezado/`);
   rutaPedidoHijo.update({
